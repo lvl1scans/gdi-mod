@@ -1525,7 +1525,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 		if (player_config.player == "plyr") {
 			const player = new Plyr('#player', {
 				ratio: "16:9", 
-				playsinline: false,
+				playsinline: true,
 				seekTime: 10, 
 				controls: [
 					'play-large', 
@@ -1547,7 +1547,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 				fullscreen: {
 					enabled: true,
 					fallback: true,
-					iosNative: true
+					iosNative: false
 				}
 			   });
 		} else if (player_config.player == "videojs") {
