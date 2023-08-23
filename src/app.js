@@ -1543,7 +1543,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 					'airplay', 
 					'fullscreen'
 				], 
-				iconUrl: "https://cdn.jsdelivr.net/npm/@lvl1scans/gdi_plyr_mod@$2.2.3-ch/icons/sprite.svg",
+				iconUrl: "https://cdn.jsdelivr.net/npm/@lvl1scans/gdi_plyr_mod@2.2.3-ch/icons/sprite.svg",
 				fullscreen: {
 					enabled: true,
 					fallback: true,
