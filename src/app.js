@@ -1,5 +1,5 @@
 // Redesigned by telegram.dog/TheFirstSpeedster at https://www.npmjs.com/package/@googledrive/index which was written by someone else, credits are given on Source Page.
-// v2.3.5.4
+// v2.3.5.5
 // Initialize the page
 function init() {
 	document.siteName = $('title').html();
@@ -1470,7 +1470,6 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 			player_css = ''
 		} else if (player_config.player == "vidstack") {
 			player = `<media-player
-			title="Sprite Fight"
 			src="${url}"
 			poster="${poster}"
 			aspect-ratio="16/9"
