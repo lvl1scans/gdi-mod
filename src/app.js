@@ -1494,6 +1494,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
               </button>
               <div class="dropdown-menu">
               <a class="dropdown-item" href="iina://weblink?url=${url}">IINA</a>
+			  <a class="dropdown-item" href="outplayer://${url}">OutPlayer (iOS)</a>
               <a class="dropdown-item" href="potplayer://${url}">PotPlayer</a>
               <a class="dropdown-item" href="vlc://${url}">VLC Mobile</a>
               <a class="dropdown-item" href="${url}">VLC Desktop</a>
