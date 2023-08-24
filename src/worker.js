@@ -8,6 +8,7 @@
 const environment = 'production'; // This Variable Decides the environment of the app. 'production' or 'development' or 'local'
  
 const serviceaccounts = [];
+const deploy_as_domain_for_dl = false; 
 const randomserviceaccount = serviceaccounts[Math.floor(Math.random() * serviceaccounts.length)]; // DO NOT TOUCH THIS
 const domains_for_dl = [''] // add multiple cloudflare addresses to balance the load on download/stream servers, eg. ['https://testing.fetchgoogleapi.workers.dev', 'https://testing2.fetchgoogleapi2.workers.dev']
 const domain_for_dl = domains_for_dl[Math.floor(Math.random() * domains_for_dl.length)]; // DO NOT TOUCH THIS
@@ -198,6 +199,7 @@ const homepage = `<!DOCTYPE html>
                <a class="nav-link" href="${uiConfig.contact_link}" target="_blank">${uiConfig.nav_link_4}</a>
             </li>
             ${uiConfig.show_logout_button ?'<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>': ''}
+            <li class="nav-item"><a class="nav-link">v${uiConfig.version}</a></li>
            </ul>
            <form class="d-flex" method="get" action="/0:search">
             <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search" value="" required="">
@@ -709,8 +711,13 @@ async function handleRequest(request, event) {
   let url = new URL(request.url);
   let path = url.pathname;
   let hostname = url.hostname;
+  if (deploy_as_domain_for_dl && path !== '/download.aspx') {
+    return new Response('NOT ALLOWED', {
+      status: 400
+    });
+  }
   if (path == '/app.js') {
-    const js = await fetch('https://gitlab.com/GoogleDriveIndex/Google-Drive-Index/-/raw/dev/src/app.js', {
+    const js = await fetch(uiConfig.jsdelivr_cdn_src + '@' + uiConfig.version + '/src/app.js', {
       method: 'GET',
     })
     const data = await js.text()
@@ -811,10 +818,10 @@ async function handleRequest(request, event) {
         const session_time = current_time + 86400000 * authConfig.login_days;
         const encryptedSession = `${await encryptString(username)}|${await encryptString(kv_key)}|${await encryptString(session_time.toString())}`;
         if (authConfig.single_session) {
-          await ENV.put(username + '_session', encryptedSession);
+          await ENV_SESSION.put(username + '_session', encryptedSession);
         }
         if (authConfig.ip_changed_action && user_ip) {
-          await ENV.put(username + '_ip', user_ip);
+          await ENV_IP.put(username + '_ip', user_ip);
         }
         // reload page with cookie
         let response = new Response("", {
@@ -880,10 +887,10 @@ async function handleRequest(request, event) {
         const session_time = current_time + 86400000 * authConfig.login_days;
         const encryptedSession = `${await encryptString(username)}|${await encryptString(password)}|${await encryptString(session_time.toString())}`;
         if (authConfig.single_session) {
-          await ENV.put(username + '_session', encryptedSession);
+          await ENV_SESSION.put(username + '_session', encryptedSession);
         }
         if (authConfig.ip_changed_action && user_ip) {
-          await ENV.put(username + '_ip', user_ip);
+          await ENV_IP.put(username + '_ip', user_ip);
         }
         const jsonResponse = {
           ok: true,
@@ -1005,7 +1012,7 @@ async function handleRequest(request, event) {
         const username = await decryptString(session.split('|')[0]);
         let kv_session
         if (authConfig.single_session) {
-          kv_session = await ENV.get(username + '_session');
+          kv_session = await ENV_SESSION.get(username + '_session');
           if (kv_session != session) {
             let response = new Response('User Logged in Someplace Else!', {
               headers: {
@@ -1017,7 +1024,7 @@ async function handleRequest(request, event) {
           }
         }
         if (authConfig.ip_changed_action && user_ip) {
-          const kv_ip = await ENV.get(username + '_ip');
+          const kv_ip = await ENV_IP.get(username + '_ip');
           if (kv_ip != user_ip) {
             let response = new Response('IP Changed! Login Required', {
               headers: {
