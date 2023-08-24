@@ -1473,7 +1473,6 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 			title="Sprite Fight"
 			src="${url}"
 			poster="${poster}"
-			thumbnails="https://media-files.vidstack.io/sprite-fight/thumbnails.vtt"
 			aspect-ratio="16/9"
 			crossorigin
 		  >
@@ -1486,7 +1485,7 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 		  </media-player>
 		  `
 		  player_js = 'https://cdn.jsdelivr.net/npm/vidstack/dist/cdn/prod.js'
-		  player_css = 'https://cdn.jsdelivr.net/npm/vidstack/styles/defaults.min.css'
+		  player_css = 'https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css'
 		}
 	}
 	// Add the container and card elements
@@ -1614,13 +1613,6 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 	videoJsStylesheet.href = player_css;
 	videoJsStylesheet.rel = 'stylesheet';
 	document.head.appendChild(videoJsStylesheet);
-
-	if (player_config.player == "vidstack") {
-		let vidstackStylesheet = document.createElement('link');
-		vidstackStylesheet.href = 'https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css';
-		vidstackStylesheet.rel = 'stylesheet';
-		document.head.appendChild(vidstackStylesheet);
-	}
 }
 
 
