@@ -1,5 +1,5 @@
 // Redesigned by telegram.dog/TheFirstSpeedster at https://www.npmjs.com/package/@googledrive/index which was written by someone else, credits are given on Source Page.
-// v2.3.5.3
+// v2.3.5.3a
 // Initialize the page
 function init() {
 	document.siteName = $('title').html();
@@ -1468,6 +1468,25 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 			player = `<div id="player"></div>`
 			player_js = 'https://content.jwplatform.com/libraries/IDzF9Zmk.js'
 			player_css = ''
+		} else if (player_config.player == "vidstack") {
+			player = `<media-player
+			title="Sprite Fight"
+			src="${url}"
+			poster="${poster}"
+			thumbnails="https://media-files.vidstack.io/sprite-fight/thumbnails.vtt"
+			aspect-ratio="16/9"
+			crossorigin
+		  >
+			<media-outlet>
+			  <media-poster
+				alt="Video"
+			  ></media-poster>
+			</media-outlet>
+			<media-community-skin></media-community-skin>
+		  </media-player>
+		  `
+		  player_js = 'https://cdn.jsdelivr.net/npm/vidstack/dist/cdn/prod.js'
+		  player_css = 'https://cdn.jsdelivr.net/npm/vidstack/styles/defaults.min.css'
 		}
 	}
 	// Add the container and card elements
@@ -1595,6 +1614,13 @@ function file_video(name, encoded_name, size, poster, url, mimeType, file_id, co
 	videoJsStylesheet.href = player_css;
 	videoJsStylesheet.rel = 'stylesheet';
 	document.head.appendChild(videoJsStylesheet);
+
+	if (player_config.player == "vidstack") {
+		let vidstackStylesheet = document.createElement('link');
+		vidstackStylesheet.href = 'https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css';
+		vidstackStylesheet.rel = 'stylesheet';
+		document.head.appendChild(vidstackStylesheet);
+	}
 }
 
 
